@@ -1,0 +1,55 @@
+baseurl = "https://ifc0nf1g.xyz/blog/"
+title = "ls -l /var/www/blog"
+copyright = "Copyright (c) 2017, all rights reserved."
+canonifyurls = true
+languageCode = "en-US"
+pluralizeListTitles = true
+verbose = true
+paginate = 3
+themesDir = "themes"
+theme = "hugo-dusk"
+publishDir = "blog"
+
+googleAnalytics = "UA-52576918-2"
+disqusShortname = "ifc0nf1gxyz"
+
+[author]
+name = "Nishaanth Guna"
+
+SectionPagesMenu = "main"
+
+# use Chroma for syntax highlight
+pygmentsStyle = "native" # other dark style options: vim, fruity, monokai
+# enable syntax highlight for code blocks
+pygmentsCodeFences = true
+
+[[menu.main]]
+  name = "Posts"
+  weight = -120
+  identifier = "post"
+  url = "/post/"
+
+[[menu.main]]
+  name = "About"
+  weight = -110
+  identifier = "About"
+  url = "/about/"
+
+
+[params.meta]
+  keywords = "blog, tech, security, pentest, bounty, vulnerability"
+  description = "Personal blog."
+
+[params]
+  github = "gameFace22"
+  twitter = "67616d654661636"
+  linkedin = "nishaanthguna"
+
+[params.colors]
+  # hugo-dusk colors
+  background = "#101010" # background color for the site
+  main = "#99cc66"
+  text = "#dbdbdb"
+  code-quote-bg = "#1D1F21" # background color for quotes and code blocks
+  copyright = "#404040" # copyright text color
+
