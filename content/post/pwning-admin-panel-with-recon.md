@@ -1,5 +1,5 @@
 ---
-title: "Pwning Admin Panel with Recon"
+title: "Pwning admin panel with recon"
 date: 2018-04-11T20:12:47+05:30
 draft: false
 ---
