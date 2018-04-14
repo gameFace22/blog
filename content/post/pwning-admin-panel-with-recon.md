@@ -1,7 +1,7 @@
 ---
 title: "Pwning Admin Panel with Recon"
 date: 2018-04-11T20:12:47+05:30
-draft: true
+draft: false
 ---
 
 Reconnaissance is one of the interesting and most critical parts of penetration testing. Using recon, one could yield API endpoints, sensitive files/folders, juicy subdomains and so on. During a recent engagement, I was able to get access to the administrative panel due to lack of authorization and sensitive files being published publicly.

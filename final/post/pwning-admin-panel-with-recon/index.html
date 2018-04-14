@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+<meta charset="utf-8" />
+<meta name="author" content="Nishaanth Guna" />
+<meta name="description" content="Personal blog." />
+<meta name="keywords" content="blog, tech, security, pentest, bounty, vulnerability" />
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="generator" content="Hugo 0.35" />
+
+<link rel="canonical" href="https://ifc0nf1g.xyz/blog/post/pwning-admin-panel-with-recon/">
+<base href="https://ifc0nf1g.xyz/blog/" />
+<meta property="og:title" content="Pwning Admin Panel with Recon" />
+<meta property="og:description" content="Reconnaissance is one of the interesting and most critical parts of penetration testing. Using recon, one could yield API endpoints, sensitive files/folders, juicy subdomains and so on. During a recent engagement, I was able to get access to the administrative panel due to lack of authorization and sensitive files being published publicly.
+Let us start with analysing the iOS application statically. On going through the Info.plist, we can see that there is a URL hardcoded." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ifc0nf1g.xyz/blog/post/pwning-admin-panel-with-recon/" />
+
+
+
+<meta property="article:published_time" content="2018-04-11T20:12:47&#43;05:30"/>
+
+<meta property="article:modified_time" content="2018-04-11T20:12:47&#43;05:30"/>
+
+
+
+
+
+
+
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Pwning Admin Panel with Recon"/>
+<meta name="twitter:description" content="Reconnaissance is one of the interesting and most critical parts of penetration testing. Using recon, one could yield API endpoints, sensitive files/folders, juicy subdomains and so on. During a recent engagement, I was able to get access to the administrative panel due to lack of authorization and sensitive files being published publicly.
+Let us start with analysing the iOS application statically. On going through the Info.plist, we can see that there is a URL hardcoded."/>
+
+
+
+<meta itemprop="name" content="Pwning Admin Panel with Recon">
+<meta itemprop="description" content="Reconnaissance is one of the interesting and most critical parts of penetration testing. Using recon, one could yield API endpoints, sensitive files/folders, juicy subdomains and so on. During a recent engagement, I was able to get access to the administrative panel due to lack of authorization and sensitive files being published publicly.
+Let us start with analysing the iOS application statically. On going through the Info.plist, we can see that there is a URL hardcoded.">
+
+
+<meta itemprop="datePublished" content="2018-04-11T20:12:47&#43;05:30" />
+<meta itemprop="dateModified" content="2018-04-11T20:12:47&#43;05:30" />
+<meta itemprop="wordCount" content="566">
+
+
+
+<meta itemprop="keywords" content="" />
+
+
+<link rel="stylesheet" href="css/layout.css" />
+<style type="text/css">
+body {
+  background-color: #101010;
+  color: #dbdbdb;
+}
+
+a { color: #dbdbdb; }
+
+pre {
+  background: #1D1F21;
+  border: 1px solid #dbdbdb;
+  border-radius: 5px;
+}
+
+code {
+  background: #1D1F21;
+}
+
+blockquote {
+  background: #1D1F21;
+  border-left: 3px solid #dbdbdb;
+}
+
+table {
+  margin: 1em auto;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #dbdbdb;
+}
+
+th {
+  background: #dbdbdb;
+  color: #101010;
+}
+
+.siteTitle a { color: #99cc66; }
+
+.post .content h1{ color: #99cc66; }
+.post .content h2{ color: #99cc66; }
+.post .content h3{ color: #99cc66; }
+.post .content h4{ color: #99cc66; }
+.post .content h5{ color: #99cc66; }
+.post .content h6{ color: #99cc66; }
+.post .content a:hover { color: #99cc66; }
+.social-link:hover { color: #99cc66; }
+.nav-item-title:hover { color: #99cc66; }
+.tag a:hover { color: #99cc66; }
+.copyright { color: #404040 }
+.poweredby { color: #404040 }
+.poweredby a { color: #404040; }
+.post-preview .title a{ color: #99cc66; }
+.content-item a:hover{
+  text-decoration: underline;
+  color: #99cc66;
+}
+.post-list .title { color: #99cc66; }
+.rmore { color: #99cc66; }
+.terms .term a:hover {
+  text-decoration: underline;
+  color: #99cc66;
+}
+
+</style>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-52576918-2', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+<title>
+
+
+     Pwning Admin Panel with Recon 
+
+</title>
+
+</head>
+
+
+<body>
+<div class="main">
+<header>
+
+<div class="header-bar">
+
+  <nav>
+    <div class="siteTitle">
+      <a href="https://ifc0nf1g.xyz/blog/">ls -l /var/www/blog</a>
+    </div> 
+
+    
+    
+    <a class="nav-item" href="https://ifc0nf1g.xyz/blog/post/"><div class="nav-item-title">Posts</div></a>
+    
+    <a class="nav-item" href="https://ifc0nf1g.xyz/blog/about/"><div class="nav-item-title">About</div></a>
+    
+
+  </nav>
+</div>
+
+
+
+</header>
+
+
+<article class="post">
+    <h1 class="title"> Pwning Admin Panel with Recon </h1>
+    <div class="content"> <p>Reconnaissance is one of the interesting and most critical parts of penetration testing. Using recon, one could yield API endpoints, sensitive files/folders, juicy subdomains and so on. During a recent engagement, I was able to get access to the administrative panel due to lack of authorization and sensitive files being published publicly.</p>
+
+<p>Let us start with analysing the iOS application statically. On going through the <a href="https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/iPhoneOSKeys.html#//apple_ref/doc/uid/TP40009252-SW1">Info.plist</a>, we can see that there is a URL hardcoded.</p>
+
+<pre><code class="language-bash">[nishaanthguna:~/pentest]$ cat Info.plist | grep -i &quot;http&quot;
+&lt;!DOCTYPE plist PUBLIC .. &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
+&lt;string&gt;https://admin.company.com/xyz/api&lt;/string&gt;
+</code></pre>
+
+<p>Traversing the URL, we get a page with link to the Swagger UI.</p>
+
+<p><img src="https://ifc0nf1g.xyz/blog/images/traverse-swagger.jpg" alt="swagger" /></p>
+
+<p>Looking through the <a href="https://swagger.io/swagger-ui/">documentation</a>, we can see that Swagger UI can be used to visualize and interact with API&rsquo;s resources and that it is automatically generated from the specification. Following was the UI page retrieved while visiting the URL found from the previous step.</p>
+
+<p><img src="https://ifc0nf1g.xyz/blog/images/admin-swagger.jpg" alt="admin-swagger" /></p>
+
+<p>Weirdly, not only API calls made from the mobile application, but also the endpoints which an admin can use to manage users, distribute content, customize the chatbot the app uses were exposed. With the knowledge of extra endpoints, I fired up Burp to see the network traffic. Initially, my idea was to replace the endpoints of the mobile application with the admin endpoints found from Swagger UI to check if there was proper authorization to differentiate between normal and administrative users.</p>
+
+<p>From the &lsquo;Admin User&rsquo; API documentation, we can see there is an endpoint to print out the admin user count using /admin/users/count. This looks promising since it does not require any request body and is pretty straightforward.</p>
+
+<p>Logged into the mobile application as a normal user, I replaced one of the API calls from /xyz/api/users/account/preferences to /xyz/api/admin/users/count and forwarded the request.</p>
+
+<p><img src="https://ifc0nf1g.xyz/blog/images/admin-count.jpg" alt="admin-count" /></p>
+
+<p>It worked! This means the server does not have any authorization in place. Basically, we can make a request to any API endpoint including /admin, /chatbot, /moderate considering we know the structure of the request body and the headers involved. Let us try to enumerate more with the endpoints from Swagger and escalate this.</p>
+
+<p>From the Swagger UI attachment, we can see that there is another endpoint to find information about admin users by making a request to /admin/users/{id}</p>
+
+<pre><code>GET /xyz/api/admin/users/1 HTTP/1.1
+Host: https://admin.company.com
+User Agent: MS-RELEASE/1.0.32 (iPhone; iOS 10.1.1; Scale/2.00)
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkdldCB5b3VyIG93biB0b2tlbiEiLCJpYXQiOjE1MTYyMzkwMjJ9.12neWKBPl2q0alhnEiJ_g018_0YHtZMaFzCjsWs0VE
+
+{
+  &quot;ID&quot;: 1,
+  &quot;Name&quot;: &quot;Admin User&quot;,
+  &quot;Username&quot;: &quot;XYZ&quot;,
+  &quot;EMail&quot;: &quot;dev@nonexistingdomain.com&quot;,
+  &quot;Roles&quot;: [
+    {
+      &quot;ID&quot;: 1,
+      &quot;Name&quot;: &quot;Admin&quot;,
+      &quot;Menu&quot;:[
+        {
+          &quot;Path&quot;: &quot;#/admin&quot;,
+          &quot;Icon&quot;: &quot;fa-user&quot;,
+          &quot;Order&quot;: &quot;1&quot;,
+          &quot;Roles&quot;: &quot;READ,WRITE&quot;,
+        }
+      ]
+    }  
+}       
+</code></pre>
+
+<p>Awesome! Using Burp&rsquo;s Intruder, we can retrieve all the 8 admin&rsquo;s username, e-mail by enumerating the {id} parameter.</p>
+
+<p><img src="https://ifc0nf1g.xyz/blog/images/enumerate-admin.jpg" alt="enumerate-admin" /></p>
+
+<p>Now that we have the admin usernames to login. Let us grab common password list from <a href="https://github.com/danielmiessler/SecLists/tree/master/Passwords/Common-Credentials">Seclists</a> and run a quick bruteforce before reporting.</p>
+
+<p>Luckily, one of the admin users had a weak password and the application didn&rsquo;t have any rate limiting in the login page. With the obtained admin access, we could do anything from adding or removing users, modify the content which is displayed in the mobile application, send notifications to the end users and a lot of interesting things.</p>
+
+<p><img src="https://ifc0nf1g.xyz/blog/images/admin-panel.jpg" alt="admin-panel" /></p>
+
+<p>It was fun to put bits and pieces together to get admin access on the web application. I have also written a primer on static analysis of iOS applications at <a href="https://secdevops.ai/ios-static-analysis-and-recon-c611eaa6d108">SecDevOps.</a> Do check it out ;)</p>
+
+<p>Please don&rsquo;t hesitate to post feedback or comments below. You can also DM me on Twitter if you&rsquo;d like.</p>
+ </div>
+    <footer class="post-footer">
+
+  <div class="post-footer-data">
+    
+<div class="tags">
+    
+</div>
+
+    <div class="date"> Apr 11, 2018 </div>
+  </div>
+
+</footer>
+
+
+  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "ifc0nf1gxyz" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</article>
+
+  <footer>
+
+  <div class="social-links-footer">
+
+  
+
+  
+  <a href="https://github.com/gameFace22" target="_blank"><div class="social-link">GitHub</div></a>
+  
+
+  
+
+  
+  <a href="https://twitter.com/67616d654661636" target="_blank"><div class="social-link">Twitter</div></a>
+  
+
+  
+  <a href="https://www.linkedin.com/in/nishaanthguna" target="_blank"><div class="social-link">LinkedIn</div></a>
+  
+
+  <div class="social-link">
+  <a href="https://ifc0nf1g.xyz/blog/index.xml" target="_blank">RSS</a>
+  </div>
+
+</div>
+
+
+  <div class="copyright"> Copyright (c) 2017, all rights reserved. </div>
+
+  <div class="poweredby">
+    Powered by <a href="https://gohugo.io/">Hugo</a>.
+  </div>
+
+  </footer>
+
+</div> 
+
+</body>
+</html>
+

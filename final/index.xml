@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>Copyright (c) 2017, all rights reserved.</copyright>
-    <lastBuildDate>Sat, 30 Dec 2017 01:19:34 -0800</lastBuildDate>
+    <lastBuildDate>Wed, 11 Apr 2018 20:12:47 +0530</lastBuildDate>
     
 	<atom:link href="https://ifc0nf1g.xyz/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Pwning Admin Panel with Recon</title>
+      <link>https://ifc0nf1g.xyz/blog/post/pwning-admin-panel-with-recon/</link>
+      <pubDate>Wed, 11 Apr 2018 20:12:47 +0530</pubDate>
+      
+      <guid>https://ifc0nf1g.xyz/blog/post/pwning-admin-panel-with-recon/</guid>
+      <description>Reconnaissance is one of the interesting and most critical parts of penetration testing. Using recon, one could yield API endpoints, sensitive files/folders, juicy subdomains and so on. During a recent engagement, I was able to get access to the administrative panel due to lack of authorization and sensitive files being published publicly.
+Let us start with analysing the iOS application statically. On going through the Info.plist, we can see that there is a URL hardcoded.</description>
+    </item>
     
     <item>
       <title>Directory Listing to Account Takeover</title>
