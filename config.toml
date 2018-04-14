@@ -8,7 +8,7 @@ verbose = true
 paginate = 3
 themesDir = "themes"
 theme = "hugo-dusk"
-publishDir = "blog"
+publishDir = "final"
 
 googleAnalytics = "UA-52576918-2"
 disqusShortname = "ifc0nf1gxyz"

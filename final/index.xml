@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ls -l /var/www/blog</title>
+    <link>https://ifc0nf1g.xyz/blog/</link>
+    <description>Recent content on ls -l /var/www/blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>Copyright (c) 2017, all rights reserved.</copyright>
+    <lastBuildDate>Sat, 30 Dec 2017 01:19:34 -0800</lastBuildDate>
+    
+	<atom:link href="https://ifc0nf1g.xyz/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Directory Listing to Account Takeover</title>
+      <link>https://ifc0nf1g.xyz/blog/post/directory-listing-to-takeover/</link>
+      <pubDate>Sat, 30 Dec 2017 01:19:34 -0800</pubDate>
+      
+      <guid>https://ifc0nf1g.xyz/blog/post/directory-listing-to-takeover/</guid>
+      <description>Directory listing is one of the most common misconfigurations which can be exploited trivially. However, the impact depends on the criticality of the files present inside the directory.
+Recently, during one of my pentests, I came across an interesting open directory which I was able to leverage. On enumerating, I discovered a subdomain which was the staging server and was accessible over the internet.
+[nishaanthguna:~/essentials]$ curl --silent https://crt.sh/\?q\=%.domain.com | sed &#39;s/&amp;lt;\/\?</description>
+    </item>
+    
+    <item>
+      <title>About Me</title>
+      <link>https://ifc0nf1g.xyz/blog/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ifc0nf1g.xyz/blog/about/</guid>
+      <description>Hey there! My name is Nishaanth Guna. I am 22 and hold a bachelor&amp;rsquo;s degree in Computer Science and Engineering.
+Interested in Web and Mobile application penetration testing. Currently working with Appknox as a Security Researcher. Previously, I worked with Ernst &amp;amp; Young consulting Media and Technology companies to secure their digital footprint by performing Vulnerability Assessment and Penetration Testing.
+When I am not typing on my keyboard, I like to explore new places, play CS 1.</description>
+    </item>
+    
+  </channel>
+</rss>

